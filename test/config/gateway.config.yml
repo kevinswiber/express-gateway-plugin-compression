@@ -1,0 +1,26 @@
+http:
+  port: 8080
+admin:
+  port: 9876
+  hostname: localhost
+apiEndpoints:
+  api:
+    host: '*'
+serviceEndpoints:
+  backend:
+    url: 'http://localhost:8081'
+policies:
+  - proxy
+  - compression
+pipelines:
+  - name: basic
+    apiEndpoints:
+      - api
+    policies:
+      - compression:
+          - action:
+              threshold: 1
+      - proxy:
+          - action:
+              serviceEndpoint: backend
+              changeOrigin: true
